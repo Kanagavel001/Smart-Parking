@@ -17,11 +17,16 @@ const App = () => {
   const location = useLocation();
 
   const [closeNav, setCloseNav] = useState(false);
+  const [isHome, setIsHome] = useState(false);
+  const isAdminRoute = useLocation().pathname.startsWith('/admin');
 
   useEffect(()=>{
-    if(location.pathname === '/login' || location.pathname === '/admin' || location.pathname === '/admin/parking' || location.pathname === '/admin/booking'){
+    if(location.pathname === '/login' || isAdminRoute){
       setCloseNav(true)
+    }else if(location.pathname === '/') {
+      setIsHome(true)
     }else{
+      setIsHome(false)
       setCloseNav(false)
     }
   }, [location])
@@ -31,7 +36,7 @@ const App = () => {
       <ToastContainer 
         autoClose={3000}
       />
-      {!closeNav && <Navbar />}
+      {!closeNav && <Navbar isHome={isHome}/>}
       <Routes>
         <Route path='/' element={<Home />}/>
         <Route path='/login' element={<Login />}/>

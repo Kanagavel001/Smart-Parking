@@ -12,7 +12,9 @@ export const AppProvider = ({ children }) => {
 
     const floors = ['3rd Floor', '2nd Floor', '1st Floor','Ground Floor']
     const [floorData, setFloorData] = useState([])
+    const [isAdmin, setIsAdmin] = useState(false)
     const { user } = useUser();
+    const navigate = useNavigate();
     const { getToken } = useAuth();
 
     const fetchFloorData = async () => {
@@ -24,14 +26,24 @@ export const AppProvider = ({ children }) => {
         }
     }
 
+    const fetchIsAdmin = async (userId) => {
+        const { data } = await axios.post('/api/user/is-admin', {userId})
+        if(data.success){
+            setIsAdmin(true)
+        }
+    }
+
     useEffect(() => {
         fetchFloorData();
     }, [floorData]);
 
+    useEffect(()=>{
+        if(user){
+            fetchIsAdmin(user.id)
+        }
+    },[user])
 
-    const navigate = useNavigate();
-
-    const value = { axios,user, getToken, navigate, floorData, setFloorData, fetchFloorData, floors };
+    const value = { axios, user, getToken, navigate, floorData, setFloorData, fetchFloorData, floors, isAdmin };
 
     return (
         <AppContext.Provider value={value}>

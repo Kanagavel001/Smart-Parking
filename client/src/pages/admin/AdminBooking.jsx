@@ -6,7 +6,7 @@ import { useEffect } from 'react'
 
 const AdminBooking = () => {
 
-  const { axios } = useAppContext()
+  const { axios, isAdmin } = useAppContext()
   const [isOnlineBooking, setIsOnlineBooking] = useState(true);
   const [onlineBookings, setOnlineBookings] = useState([]);
   const [onspotBookings, setOnspotBookings] = useState([]);
@@ -21,6 +21,7 @@ const AdminBooking = () => {
   }
 
   const fetchOnspotBookings = async () => {
+    
     const { data } = await axios.get('/api/booking/get-onspot');
     if(data.success){
       setOnspotBookings(data.onspotBookings)
@@ -30,6 +31,9 @@ const AdminBooking = () => {
   }
 
   const changeAction = async (bookingId) => {
+    if(!isAdmin){
+      return toast.error("Admin only access")
+    }
     const { data } = await axios.post('/api/booking/change-action', {bookingId})
     if(data.success){
       toast.success(data.message)

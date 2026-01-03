@@ -1,9 +1,10 @@
 import express from 'express'
-import { protectUser } from '../middleware/protect.js';
-import { isUser } from '../controllers/userController.js';
+import { getUserBookings, isAdmin } from '../controllers/userController.js';
+import { protectAdmin } from '../middleware/protect.js';
 
 const userRouter = express.Router();
 
-userRouter.get('/is-user', protectUser, isUser)
+userRouter.post('/is-admin', protectAdmin, isAdmin)
+userRouter.post('/bookings', getUserBookings)
 
 export default userRouter;

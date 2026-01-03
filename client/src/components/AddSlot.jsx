@@ -8,10 +8,13 @@ const AddSlot = ({setOpenAddSlot}) => {
     const [floorName, setFloorName] = useState('');
     const [slotName, setSlotName] = useState('');
 
-    const { axios, floors } = useAppContext();
+    const { axios, floors, isAdmin } = useAppContext();
 
     const handleSubmit = async (e) => {
         e.preventDefault()
+        if(!isAdmin){
+            return toast.error("Admin only access")
+        }
         try {
             const slotData = { floorName, slotName };
 

@@ -6,7 +6,7 @@ import { useAppContext } from '../../context/AppContext';
 
 const AdminParking = () => {
 
-  const { floorData, axios, fetchFloorData } = useAppContext();
+  const { floorData, axios, fetchFloorData, isAdmin } = useAppContext();
 
   const [selectedFloor, setSelectedFloor] = useState({ floorName: "", slotsList: [] });
   const [selectedSlot, setSelectedSlot] = useState({})
@@ -25,6 +25,9 @@ const AdminParking = () => {
 
   const handleBookSlot =  async (e) => {
     e.preventDefault();
+    if(!isAdmin){
+        return toast.error("Admin only access")
+    }
     const bookingData = {
       car_number: carNumber,
       duration,

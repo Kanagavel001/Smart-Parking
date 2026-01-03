@@ -61,7 +61,7 @@ useEffect(() => {
 }, [floorData]);
 
   return (
-    <div className='bg-bg px-4 md:px-16 lg:px-24 xl:px-32 max-w-screen max-h-screen mx-auto overflow-x-hidden'>
+    <div className='bg-bg md:pt-15 pt-12 px-4 md:px-16 lg:px-24 xl:px-32 max-w-screen max-h-screen mx-auto overflow-x-hidden'>
 
       <div className='flex items-center justify-around sm:my-6 my-2'>
 

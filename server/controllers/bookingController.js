@@ -2,7 +2,6 @@ import Booking from "../models/Booking.js";
 import Floor from "../models/Floor.js";
 import stripe from 'stripe'
 
-
 export const createOnspotBooking = async (req, res) => {
     try {
         const { car_number, duration, slotName, floorName, price } = req.body.bookingData;
@@ -62,7 +61,7 @@ export const createOnlineBooking = async (req, res) => {
             metadata: {
                 bookingId: booking._id.toString()
             },
-            expires_at: Math.floor(Date.now() /1000) + 60 * 60
+            expires_at: Math.floor(new Date(dateAndTime).getTime() / 1000) 
         })
 
         booking.paymentLink = session.url;
@@ -91,18 +90,6 @@ export const getOnspotBooking = async (req, res) => {
         res.json({success: true, onspotBookings });
     } catch (error) {
         console.log('getOnspotBooking error', error.message);
-        res.json({ success: false, message: error.message});
-    }
-}
-
-export const getSingleUserBookings = async (req, res) => {
-    try {
-        const userId = req.user._id;
-        console.log(userId)
-        const bookings = await Booking.find({user: userId})
-        res.json({success: true, bookings });
-    } catch (error) {
-        console.log('getSingleUserBookings error', error.message);
         res.json({ success: false, message: error.message});
     }
 }

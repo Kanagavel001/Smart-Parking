@@ -2,39 +2,39 @@ import React from 'react'
 import moment from 'moment';
 import { useAppContext } from '../context/AppContext';
 import { useState } from 'react';
-import { toast } from 'react-toastify'
 import { useEffect } from 'react'
+import { Link } from 'react-router-dom';
+import Loading from '../components/Loading';
 
 const Bookings = () => {
 
-  const { axios, getToken, user } = useAppContext()
+  const { axios, user } = useAppContext()
   const [bookings, setBookings] = useState([])
+  const [isLoading, setIsLoading] = useState(true);
 
-  const fetchBookings = async () => {
+  const fetchBookings = async (userId) => {
     try {
-      const token = await getToken();
-      const { data } = await axios.get('/api/booking/user', {headers: {Authorization: `Bearer ${token}`}});
+      const { data } = await axios.post('/api/user/bookings', {userId});
       if(data.success){
         setBookings(data.bookings)
-      }else{
-        toast.error(data.message)
       }
     } catch (error) {
-      toast.error(error.message)
+      console.error(error);
     }
+    setIsLoading(false)
   }
 
   useEffect(()=>{
     if(user){
-      fetchBookings();
+      fetchBookings(user.id)
     }
   }, [user])
 
-  return (
-    <div className='bg-bg px-4 md:px-16 lg:px-24 xl:px-32 max-h-screen max-w-screen mx-auto overflow-x-hidden'>
+  return !isLoading ? (
+    <div className='bg-bg md:pt-15 px-4 md:px-16 lg:px-24 xl:px-32 max-h-screen max-w-screen mx-auto overflow-x-hidden'>
       <h1 className='my-4 text-2xl font-bold'>Bookings</h1>
 
-      {bookings.length > 0 ? <div className='flex flex-col gap-4 lg:w-4xl my-4 overflow-y-scroll h-140 no-scrollbar max-[450px]:text-sm border-2 border-secondary p-4 rounded-lg shadow-inner shadow-secondary/30  '>
+      <div className='flex flex-col gap-4 lg:w-4xl my-4 overflow-y-scroll h-140 no-scrollbar max-[450px]:text-sm border-2 border-primary p-4 rounded-lg shadow-lg shadow-primary/30  '>
         { bookings.map((item) => (
           <div className='flex items-center justify-between border-2 border-primary hover:shadow-lg shadow-secondary/10 py-1 px-4 rounded-lg transition-all duration-300' key={item._id}>
 
@@ -47,22 +47,26 @@ const Bookings = () => {
               <p>{item.slotName} Slot</p>
             </div>
 
-            <div className='flex flex-col items-center'>
+            <div className='flex flex-col items-center max-md:hidden'>
               <p>{moment(item.dateAndTime).format('DD MMM YYYY')}</p>
               <p>{moment(item.dateAndTime).format('hh:mm A')}</p>
             </div>
 
-            <div className='flex flex-col items-center font-medium'>
+            <div className='flex flex-col items-center font-medium '>
               <p>{item.duration} Hours</p>
               <p>₹ {item.price}</p>
             </div>
 
+            <div className='flex items-center font-medium'>
+              <Link aria-disabled={item.paid} to={item.paymentLink} className={` px-4 py-0.5 rounded-lg transition-all duration-300 ${item.paid ? "border-2 text-primary border-primary cursor-not-allowed" : "text-white bg-secondary hover:scale-105 active:scale-95 hover:shadow-lg shadow-primary/30"}`}>{item.paid ? "Paid" : "Pay"}</Link>
+            </div>
+
           </div>
         ))}
-      </div> : 
-      <div>No Bookings</div>
-      }
+      </div>
     </div>
+  ) : (
+    <Loading />
   )
 }
 
