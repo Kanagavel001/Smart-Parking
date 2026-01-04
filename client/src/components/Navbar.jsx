@@ -31,7 +31,7 @@ const Navbar = ({isHome}) => {
                 ))}
             </div>
             <div>
-                {!user ? <button onClick={()=>navigate('/login')} className='text-white bg-linear-to-l from-primary/90 hover:to-secondary hover:from-primary to-secondary/90 py-1.5 px-6 rounded-full font-medium hover:shadow-lg shadow-primary/50 active:scale-95 transition-all duration-300'>Login</button>
+                {!user ? <button onClick={()=>navigate('/login')} className='text-white border-2 bg-linear-to-l from-primary/90 hover:to-secondary hover:from-primary to-secondary/90 py-1.5 px-6 rounded-full font-medium hover:shadow-lg shadow-primary/50 active:scale-95 transition-all duration-300'>Login</button>
                 :
                 <UserButton>
                     <UserButton.MenuItems>
@@ -50,7 +50,7 @@ const Navbar = ({isHome}) => {
                 </UserButton.MenuItems>
             </UserButton>
             :
-            <button onClick={()=>{navigate('/login'); setOpenMenu(false)}} className='text-white bg-linear-to-l from-primary to-secondary py-1 px-4 rounded-full font-medium active:scale-95 transition-all duration-300'>Login</button>}
+            <button onClick={()=>{navigate('/login'); setOpenMenu(false)}} className='text-white border bg-linear-to-l from-primary to-secondary py-1 px-4 rounded-full font-medium active:scale-95 transition-all duration-300'>Login</button>}
             <Menu className='text-white' onClick={()=>setOpenMenu(true)}/>
         </div>
 

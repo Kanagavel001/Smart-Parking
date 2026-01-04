@@ -61,7 +61,7 @@ export const createOnlineBooking = async (req, res) => {
             metadata: {
                 bookingId: booking._id.toString()
             },
-            expires_at: Math.floor(new Date(dateAndTime).getTime() / 1000) 
+            expires_at: Math.floor(Date.now() / 1000) + 60 * 60
         })
 
         booking.paymentLink = session.url;

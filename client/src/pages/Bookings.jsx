@@ -31,7 +31,7 @@ const Bookings = () => {
   }, [user])
 
   return !isLoading ? (
-    <div className='bg-bg md:pt-15 px-4 md:px-16 lg:px-24 xl:px-32 max-h-screen max-w-screen mx-auto overflow-x-hidden'>
+    <div className='bg-bg md:pt-15 pt-10 px-4 md:px-16 lg:px-24 xl:px-32 max-h-screen max-w-screen mx-auto overflow-x-hidden'>
       <h1 className='my-4 text-2xl font-bold'>Bookings</h1>
 
       <div className='flex flex-col gap-4 lg:w-4xl my-4 overflow-y-scroll h-140 no-scrollbar max-[450px]:text-sm border-2 border-primary p-4 rounded-lg shadow-lg shadow-primary/30  '>
